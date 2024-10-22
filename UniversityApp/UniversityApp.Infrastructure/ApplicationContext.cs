@@ -6,34 +6,30 @@ namespace UniversityApp.Infrastructure;
 
 public class ApplicationContext : DbContext
 {
-	private const string _pathToAppSettings = "appsettings.json";
-	private const string _connectionName = "DefaultConnection";
-
 	public DbSet<Student> Students { get; set; }
 	public DbSet<Group> Groups { get; set; }
 	public DbSet<Course> Courses { get; set; }
 
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	public ApplicationContext(DbContextOptions<ApplicationContext> options)
+		: base(options)
 	{
-		var config = new ConfigurationBuilder()
-			.AddJsonFile(_pathToAppSettings)
-			.SetBasePath(Directory.GetCurrentDirectory())
-			.Build();
-
-		optionsBuilder
-			.UseLazyLoadingProxies()
-			.UseSqlServer(config.GetConnectionString(_connectionName));
 	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		modelBuilder.Entity<Student>()
-			.HasIndex("FirstName", "LastName");
+		modelBuilder.Entity<Student>(e =>
+		{
+			e.HasIndex("FirstName", "LastName");
+		});
 
-		modelBuilder.Entity<Group>()
-			.HasIndex("Name");
+		modelBuilder.Entity<Group>(e =>
+		{
+			e.HasIndex("Name").IsUnique(true);
+		});
 
-		modelBuilder.Entity<Course>()
-			.HasIndex("Name");
+		modelBuilder.Entity<Course>(e =>
+		{
+			e.HasIndex("Name").IsUnique(true);
+		});
 	}
 }

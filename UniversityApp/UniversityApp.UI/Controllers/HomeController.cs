@@ -1,12 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UniversityApp.Core.Entities;
+using UniversityApp.Core.Interfaces;
 
 namespace UniversityApp.UI.Controllers;
 
 public class HomeController : Controller
 {
-	public IActionResult Index()
+	private readonly IUnitOfWork _unitOfWork;
+
+	public HomeController(IUnitOfWork unitOfWork)
 	{
-		return View();
+		_unitOfWork = unitOfWork;
+	}
+
+	public async Task<IActionResult> Index()
+	{
+		var courses = await _unitOfWork.CourseRepository.GetAsync();
+		return View(courses);
 	}
 
 }

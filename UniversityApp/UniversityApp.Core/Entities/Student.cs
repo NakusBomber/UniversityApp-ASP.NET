@@ -22,6 +22,12 @@ public class Student : Entity
 
 	public Guid? GroupId { get; set; }
 
+	protected Student()
+	{
+		FirstName = string.Empty;
+		LastName = string.Empty;
+	}
+
 	public Student(Guid id, string firstName, string lastName, Group? group = null)
 	{
 		Id = id;

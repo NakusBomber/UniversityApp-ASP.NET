@@ -1,6 +1,22 @@
+using Microsoft.EntityFrameworkCore;
+using UniversityApp.Core.Interfaces;
+using UniversityApp.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var connectLine = builder.Configuration.GetConnectionString("DefaultConnection");
+if(connectLine == null)
+{
+    throw new ArgumentNullException("Connection string not found");
+}
+
+builder.Services.AddDbContext<ApplicationContext>(options =>
+{
+    options.UseLazyLoadingProxies();
+    options.UseSqlServer(connectLine);
+});
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

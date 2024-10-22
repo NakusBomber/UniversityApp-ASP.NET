@@ -1,6 +1,18 @@
-﻿@{
+﻿@using UniversityApp.Core.Entities
+@model List<Course>
+@{
 	ViewData["Title"] = "Start";
 }
-
-
-<h2>TEST</h2>
+<h1>Courses</h1>
+@{
+	int i = 0;
+	foreach (var course in Model)
+	{
+		i++;
+		<div>
+			<span>@i.</span> 
+			<span class="fw-bold">@course.Name</span>
+			<span class="text-end text-secondary">@course.Id</span>
+		</div>
+	}
+}

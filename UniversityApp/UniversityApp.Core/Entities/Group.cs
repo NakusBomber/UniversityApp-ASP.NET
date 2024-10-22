@@ -20,6 +20,12 @@ public class Group : Entity
 
 	public virtual List<Student> Students { get; set; } = new List<Student>();
 
+	protected Group()
+	{
+		Name = string.Empty;
+		Course = new Course(Guid.NewGuid(), string.Empty);
+	}
+
 	public Group(string name, Course course)
 		: this(Guid.NewGuid(), name, course)
 	{

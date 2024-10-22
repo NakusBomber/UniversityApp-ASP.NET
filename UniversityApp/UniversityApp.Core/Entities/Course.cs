@@ -17,6 +17,11 @@ public class Course : Entity
 
 	public virtual List<Group> Groups { get; set; } = new List<Group>();
 
+	protected Course()
+	{
+		Name = string.Empty;
+	}
+
 	public Course(string name, string? description = null)
 		: this(Guid.NewGuid(), name, description)
 	{
