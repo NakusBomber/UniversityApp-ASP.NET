@@ -1,0 +1,24 @@
+﻿@using UniversityApp.Core.Entities
+@model GroupsViewModel
+@{
+	ViewData["Title"] = "Groups";
+}
+
+@{
+	if (Model.Groups == null || !Model.Groups.Any())
+	{
+		<h4>Not found no one groups</h4>
+	}
+	else
+	{
+		<h2>Groups:</h2>
+		if(Model.CourseId != null)
+		{
+			<h6>With course id: @Model.CourseId</h6>
+		}
+		foreach (var item in Model.Groups)
+		{
+			<a asp-action="Group" asp-route-id="@item.Id">@item.Name</a>
+		}
+	}
+}

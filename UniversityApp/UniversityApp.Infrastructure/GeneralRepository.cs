@@ -57,12 +57,18 @@ public class GeneralRepository<TEntity> : IRepository<TEntity>
 
 	public async Task<TEntity> GetByIdAsync(Guid id)
 	{
-		var entities = _context.Set<TEntity>();
-		var entity = await entities.FirstOrDefaultAsync(e => e.Id == id);
+		var entity = await FindAsync(e => e.Id == id);
 		if(entity == null)
 		{
 			throw new InvalidOperationException("Entity by this Id not found");
 		}
+		return entity;
+	}
+
+	public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> expression)
+	{
+		var entities = _context.Set<TEntity>();
+		TEntity? entity = await entities.FirstOrDefaultAsync(expression);
 		return entity;
 	}
 

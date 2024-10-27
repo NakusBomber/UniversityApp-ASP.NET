@@ -16,6 +16,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(connectLine);
 });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllersWithViews();
 
@@ -36,8 +37,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapDefaultControllerRoute();
 
 app.Run();

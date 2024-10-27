@@ -1,0 +1,20 @@
+﻿@using UniversityApp.Core.Entities
+@model IEnumerable<Course>
+@{
+	ViewData["Title"] = "Courses page";
+}
+
+@{
+	if(Model == null || !Model.Any())
+	{
+		<h4>Not found no one course</h4>
+	}
+	else
+	{
+		<h2>Courses:</h2>
+		foreach (var item in Model)
+		{
+			<a asp-action="Course" asp-route-id="@item.Id">@item.Name</a>
+		}
+	}
+}

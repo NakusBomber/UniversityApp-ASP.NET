@@ -22,6 +22,9 @@ public class Student : Entity
 
 	public Guid? GroupId { get; set; }
 
+	[NotMapped]
+	public string FullName => $"{FirstName} {LastName}";
+
 	protected Student()
 	{
 		FirstName = string.Empty;

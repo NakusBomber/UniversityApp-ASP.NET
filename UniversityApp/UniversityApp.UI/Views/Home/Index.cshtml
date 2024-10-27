@@ -1,18 +1,7 @@
-﻿@using UniversityApp.Core.Entities
-@model List<Course>
-@{
+﻿@{
 	ViewData["Title"] = "Start";
 }
-<h1>Courses</h1>
-@{
-	int i = 0;
-	foreach (var course in Model)
-	{
-		i++;
-		<div>
-			<span>@i.</span> 
-			<span class="fw-bold">@course.Name</span>
-			<span class="text-end text-secondary">@course.Id</span>
-		</div>
-	}
-}
+
+<h1>Start page</h1>
+
+<a href="/courses">Go to courses</a>

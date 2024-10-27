@@ -1,0 +1,16 @@
+﻿@using UniversityApp.Core.Entities
+@model Student?
+@{
+	ViewData["Title"] = Model?.FullName ?? "Not found group";
+}
+
+@if (Model != null)
+{
+	<p>@Model.FullName</p>
+	<p>@Model.Id</p>
+	<p class="text-secondary">@Model.GroupId</p>
+}
+else
+{
+	<h4>Not found student</h4>
+}

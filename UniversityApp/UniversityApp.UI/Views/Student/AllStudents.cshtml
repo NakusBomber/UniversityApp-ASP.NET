@@ -1,0 +1,23 @@
+﻿@model StudentsViewModel
+@{
+	ViewData["Title"] = "Students";
+}
+
+@{
+	if (Model.Students == null || !Model.Students.Any())
+	{
+		<h4>Not found no one student</h4>
+	}
+	else
+	{
+		<h2>Students:</h2>
+		if (Model.GroupId != null)
+		{
+			<h6>With group id: @Model.GroupId</h6>
+		}
+		foreach (var item in Model.Students)
+		{
+			<a asp-action="Student" asp-route-id="@item.Id">@item.FullName</a>
+		}
+	}
+}
