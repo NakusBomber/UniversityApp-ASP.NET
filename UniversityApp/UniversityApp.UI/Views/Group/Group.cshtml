@@ -1,16 +1,9 @@
 ﻿@using UniversityApp.Core.Entities
-@model Group?
+@model Group
 @{
-	ViewData["Title"] = Model?.Name ?? "Not found group";
+	ViewData["Title"] = Model.Name;
 }
 
-@if (Model != null)
-{
-	<p>@Model.Name</p>
-	<p>@Model.Id</p>
-	<p class="text-secondary">@Model.CourseId</p>
-}
-else
-{
-	<h4>Not found group</h4>
-}
+<p>@Model.Name</p>
+<p>@Model.Id</p>
+<p class="text-secondary">@Model.CourseId</p>

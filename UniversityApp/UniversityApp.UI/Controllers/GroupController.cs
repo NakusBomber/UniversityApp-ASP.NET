@@ -27,7 +27,7 @@ public class GroupController : Controller
 		return View(vm);
 	}
 
-    [Route("/group")]
+    [Route("/groups/{id:guid}")]
     public async Task<IActionResult> Group(Guid id)
     {
 		try
@@ -35,9 +35,13 @@ public class GroupController : Controller
             var group = await _unitOfWork.GroupRepository.GetByIdAsync(id);
             return View(group);
 		}
+        catch (InvalidOperationException)
+        {
+            return NotFound();
+        }
 		catch (Exception)
 		{
-            return View(null);
+            return StatusCode(StatusCodes.Status500InternalServerError);
 		}
     }
 }

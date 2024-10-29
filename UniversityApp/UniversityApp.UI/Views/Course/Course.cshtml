@@ -1,15 +1,8 @@
 ﻿@using UniversityApp.Core.Entities
-@model Course?
+@model Course
 @{
-	ViewData["Title"] = Model?.Name ?? "Not found";
+	ViewData["Title"] = Model.Name;
 }
 
-@if(Model != null)
-{
-	<p>@Model.Name</p>
-	<p>@Model.Id</p>
-}
-else
-{
-	<h4>Not found course</h4>
-}
+<p>@Model.Name</p>
+<p>@Model.Id</p>

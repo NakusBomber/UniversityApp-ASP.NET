@@ -1,13 +1,13 @@
 ﻿@using UniversityApp.Core.Entities
 @model IEnumerable<Course>
 @{
-	ViewData["Title"] = "Courses page";
+	ViewData["Title"] = "Courses";
 }
 
 @{
 	if(Model == null || !Model.Any())
 	{
-		<h4>Not found no one course</h4>
+		<h4>No course found</h4>
 	}
 	else
 	{

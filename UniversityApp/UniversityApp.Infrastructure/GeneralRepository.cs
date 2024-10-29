@@ -55,6 +55,12 @@ public class GeneralRepository<TEntity> : IRepository<TEntity>
 		return await entities.ToListAsync();
 	}
 
+	/// <summary>
+	/// Get entity by <see cref="Guid"/> async.
+	/// </summary>
+	/// <param name="id">Entity <see cref="Guid"/></param>
+	/// <returns></returns>
+	/// <exception cref="InvalidOperationException">Throw, if not found entity</exception>
 	public async Task<TEntity> GetByIdAsync(Guid id)
 	{
 		var entity = await FindAsync(e => e.Id == id);

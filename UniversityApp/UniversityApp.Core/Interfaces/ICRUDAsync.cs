@@ -2,7 +2,7 @@
 
 namespace UniversityApp.Core.Interfaces;
 
-public interface ICRUDAsync<T>
+public interface ICrudAsync<T>
 {
 	public Task<List<T>> GetAsync(
 		Expression<Func<T, bool>>? filter = null,

@@ -20,7 +20,7 @@ public class CourseController : Controller
 		return View(courses);
 	}
 
-	[Route("/course")]
+	[Route("/courses/{id:guid}")]
 	public async Task<IActionResult> Course(Guid id)
 	{
 		try
@@ -28,9 +28,13 @@ public class CourseController : Controller
 			var course = await _unitOfWork.CourseRepository.GetByIdAsync(id);
 			return View(course);
 		}
+		catch (InvalidOperationException)
+		{
+			return NotFound();
+		}
 		catch (Exception)
 		{
-			return View(null);
+			return StatusCode(StatusCodes.Status500InternalServerError);
 		}
 		
 	}

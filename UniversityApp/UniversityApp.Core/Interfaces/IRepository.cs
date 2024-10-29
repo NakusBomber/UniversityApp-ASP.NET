@@ -2,7 +2,7 @@
 
 namespace UniversityApp.Core.Interfaces;
 
-public interface IRepository<T> : ICRUDAsync<T>
+public interface IRepository<T> : ICrudAsync<T>
 	where T : Entity
 {
 }

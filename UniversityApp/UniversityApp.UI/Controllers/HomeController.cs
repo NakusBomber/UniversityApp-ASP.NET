@@ -8,15 +8,15 @@ namespace UniversityApp.UI.Controllers;
 public class HomeController : Controller
 {
 
-	public HomeController()
-	{
-	}
-
 	[Route("/")]
 	public IActionResult Index()
 	{
 		return View();
 	}
 
+	public IActionResult Error(int statusCode)
+	{
+		return View("Error", statusCode);
+	}
 
 }

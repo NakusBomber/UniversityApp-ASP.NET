@@ -25,7 +25,7 @@ public class StudentController : Controller
 		return View(vm);
 	}
 
-	[Route("/student")]
+	[Route("/students/{id:guid}")]
 	public async Task<IActionResult> Student(Guid id)
 	{
 		try
@@ -33,9 +33,13 @@ public class StudentController : Controller
 			var student = await _unitOfWork.StudentRepository.GetByIdAsync(id);
 			return View(student);
 		}
+		catch (InvalidOperationException)
+		{
+			return NotFound();
+		}
 		catch (Exception)
 		{
-			return View(null);
+			return StatusCode(StatusCodes.Status500InternalServerError);
 		}
 	}
 }
