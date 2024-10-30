@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using UniversityApp.Core.Entities;
 using UniversityApp.Core.Interfaces;
+using UniversityApp.UI.Models;
 
 namespace UniversityApp.UI.Controllers;
 
+[Route("courses")]
 public class CourseController : Controller
 {
 	private readonly IUnitOfWork _unitOfWork;
@@ -13,14 +16,14 @@ public class CourseController : Controller
 		_unitOfWork = unitOfWork;
 	}
 
-	[Route("/courses")]
 	public async Task<IActionResult> AllCourses()
 	{
 		var courses = await _unitOfWork.CourseRepository.GetAsync();
-		return View(courses);
+		var courseVms = courses.Select(c => new CourseViewModel(c, c.CanDelete()));
+		return View(courseVms);
 	}
 
-	[Route("/courses/{id:guid}")]
+	[Route("{id:guid}")]
 	public async Task<IActionResult> Course(Guid id)
 	{
 		try
@@ -38,4 +41,47 @@ public class CourseController : Controller
 		}
 		
 	}
+
+	[Route("create")]
+	[HttpGet]
+	public IActionResult Create()
+	{
+		return View();
+	}
+
+	[Route("create")]
+	[HttpPost]
+	public async Task<IActionResult> Create(Course course)
+	{
+		try
+		{
+			await _unitOfWork.CourseRepository.CreateAsync(course);
+		}
+		catch (Exception)
+		{
+			return StatusCode(StatusCodes.Status500InternalServerError);
+		}
+		return RedirectToAction("AllCourses");
+	}
+
+	[Route("delete")]
+	[HttpPost]
+	public async Task<IActionResult> Delete(Guid id)
+	{
+		try
+		{
+			var course = await _unitOfWork.CourseRepository.GetByIdAsync(id);
+			if(!course.CanDelete())
+			{
+				throw new InvalidOperationException("Cannot delete this course");
+			}
+			await _unitOfWork.CourseRepository.DeleteAsync(course);
+		}
+		catch (Exception)
+		{
+			return BadRequest();
+		}
+		return RedirectToAction("AllCourses");
+	}
+
 }

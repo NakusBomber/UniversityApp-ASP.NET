@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UniversityApp.Core.Interfaces;
 using UniversityApp.Infrastructure;
+using UniversityApp.Infrastructure.Providers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,10 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(opt =>
+{
+	opt.ModelBinderProviders.Insert(0, new CourseModelBinderProvider());
+});
 
 var app = builder.Build();
 

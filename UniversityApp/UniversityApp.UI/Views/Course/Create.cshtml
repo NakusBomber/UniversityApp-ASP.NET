@@ -1,0 +1,20 @@
+﻿@using UniversityApp.Core.Entities
+@model Course
+@{
+	ViewData["Title"] = "Create course";
+}
+
+<h3>Create course</h3>
+@using (Html.BeginForm("Create", "Course", FormMethod.Post))
+{
+	<p>
+		@Html.DisplayNameFor(c => c.Name)
+		@Html.EditorFor(c => c.Name)
+	</p>
+	<p>
+		@Html.DisplayNameFor(c => c.Description)
+		@Html.TextAreaFor(c => c.Description)
+	</p>
+
+	<input class="btn btn-primary" type="submit" value="Create"/>
+}

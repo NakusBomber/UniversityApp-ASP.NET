@@ -1,8 +1,12 @@
 ﻿@using UniversityApp.Core.Entities
-@model IEnumerable<Course>
+@model IEnumerable<CourseViewModel>
 @{
 	ViewData["Title"] = "Courses";
 }
+
+<div class="container d-flex flex-row justify-content-center">
+	<a class="btn btn-primary" asp-action="Create">New course</a>
+</div>
 
 @{
 	if(Model == null || !Model.Any())
@@ -12,9 +16,26 @@
 	else
 	{
 		<h2>Courses:</h2>
-		foreach (var item in Model)
-		{
-			<a asp-action="Course" asp-route-id="@item.Id">@item.Name</a>
-		}
+		<ul class="list-group">
+			@foreach (var vm in Model)
+			{
+				var item = vm.Course;
+				var classesDelete = "btn btn-outline-danger";
+				if(!vm.IsCanDelete)
+				{
+					classesDelete += " disabled";
+				}
+				<li class="list-group-item d-flex flex-row justify-content-between">
+					<a class="text-dark text-decoration-none d-flex flex-column justify-content-center" asp-action="Course" asp-route-id="@item.Id">@item.Name</a>
+					<div class="d-flex gap-2 flex-row justify-content-between">
+						<a class="btn btn-outline-primary" asp-action="Course" asp-route-id="@item.Id">Info</a>
+						<a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+						<form method="post" asp-action="Delete" asp-route-id="@item.Id">
+							<input class="@classesDelete" type="submit" value="Delete"/>
+						</form>
+					</div>
+				</li>
+			}
+		</ul>
 	}
 }

@@ -38,4 +38,8 @@ public class Course : Entity
 	{
 		return (Id, Name, Description).GetHashCode();
 	}
+	public bool CanDelete()
+	{
+		return this.Groups.Count == 0;
+	}
 }
