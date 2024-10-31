@@ -11,8 +11,10 @@ public class Course : Entity
 
 	[Required]
 	[StringLength(50)]
+	[RegularExpression(@"^\S(.*\S)?$", ErrorMessage = "Name should not start or end with a space.")]
 	public string Name { get; set; }
 
+	[StringLength(300)]
 	public string? Description { get; set; }
 
 	public virtual List<Group> Groups { get; set; } = new List<Group>();
@@ -31,7 +33,7 @@ public class Course : Entity
 	{
 		Id = id;
 		Name = name;
-		Description = description;
+		Description = string.IsNullOrEmpty(description) ? null : description;
 	}
 
 	public override int GetHashCode()

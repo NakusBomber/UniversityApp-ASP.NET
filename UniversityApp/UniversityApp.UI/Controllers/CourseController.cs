@@ -44,10 +44,7 @@ public class CourseController : Controller
 
 	[Route("create")]
 	[HttpGet]
-	public IActionResult Create()
-	{
-		return View();
-	}
+	public IActionResult Create() => View();
 
 	[Route("create")]
 	[HttpPost]
@@ -55,6 +52,10 @@ public class CourseController : Controller
 	{
 		try
 		{
+			if (!ModelState.IsValid)
+			{
+				return View(course);
+			}
 			await _unitOfWork.CourseRepository.CreateAsync(course);
 		}
 		catch (Exception)
@@ -62,6 +63,46 @@ public class CourseController : Controller
 			return StatusCode(StatusCodes.Status500InternalServerError);
 		}
 		return RedirectToAction("AllCourses");
+	}
+
+	[Route("edit")]
+	[HttpGet]
+	public async Task<IActionResult> Edit(Guid id)
+	{
+		try
+		{
+			var course = await _unitOfWork.CourseRepository.GetByIdAsync(id);
+
+			return View(course);
+		}
+		catch (InvalidOperationException)
+		{
+			return BadRequest();
+		}
+		catch(Exception)
+		{
+			return StatusCode(StatusCodes.Status500InternalServerError);
+		}
+	}
+
+	[Route("edit")]
+	[HttpPost]
+	public async Task<IActionResult> Edit(Course course)
+	{
+		try
+		{
+			if(!ModelState.IsValid)
+			{
+				return View(course);
+			}
+			await _unitOfWork.CourseRepository.UpdateAsync(course);
+
+			return RedirectToAction("AllCourses");
+		}
+		catch (Exception)
+		{
+			return StatusCode(StatusCodes.Status500InternalServerError);
+		}
 	}
 
 	[Route("delete")]

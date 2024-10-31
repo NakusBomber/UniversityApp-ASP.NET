@@ -91,6 +91,7 @@ public class GeneralRepository<TEntity> : IRepository<TEntity>
 		}
 
 		await Task.Run(() => Update(entity));
+		await _context.SaveChangesAsync();
 	}
 
 }

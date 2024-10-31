@@ -2,19 +2,30 @@
 @model Course
 @{
 	ViewData["Title"] = "Create course";
+	var attributesErrorText = new Dictionary<string, object>()
+	{
+		{ "class", "text-danger" }
+	};
 }
 
 <h3>Create course</h3>
 @using (Html.BeginForm("Create", "Course", FormMethod.Post))
 {
-	<p>
+	
+	<div>
 		@Html.DisplayNameFor(c => c.Name)
+		@await Html.PartialAsync("_Required")
+		<br/>
 		@Html.EditorFor(c => c.Name)
-	</p>
-	<p>
+		<br />
+		@Html.ValidationMessageFor(c => c.Name, "", attributesErrorText)
+	</div>
+	<div>
 		@Html.DisplayNameFor(c => c.Description)
+		<br/>
 		@Html.TextAreaFor(c => c.Description)
-	</p>
-
+		<br />
+		@Html.ValidationMessageFor(c => c.Description, "", attributesErrorText)
+	</div>
 	<input class="btn btn-primary" type="submit" value="Create"/>
 }

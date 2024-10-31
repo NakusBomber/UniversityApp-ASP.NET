@@ -1,0 +1,35 @@
+﻿@using UniversityApp.Core.Entities
+@model Course
+@{
+	ViewData["Title"] = $"Edit {Model.Name}";
+	var attributesErrorText = new Dictionary<string, object>()
+	{
+		{ "class", "text-danger" }
+	};
+	var routeAttributes = new Dictionary<string, object>()
+	{
+		{ "id", Model.Id }
+	};
+}
+
+<h3>Edit course</h3>
+@using (Html.BeginForm("Edit", "Course", FormMethod.Post))
+{
+	@Html.HiddenFor(Model => Model.Id)
+	<div>
+		@Html.DisplayNameFor(Model => Model.Name)
+		@await Html.PartialAsync("_Required")
+		<br />
+		@Html.EditorFor(Model => Model.Name)
+		<br />
+		@Html.ValidationMessageFor(c => c.Name, "", attributesErrorText)
+	</div>
+	<div>
+		@Html.DisplayNameFor(Model => Model.Description)
+		<br />
+		@Html.TextAreaFor(Model => Model.Description)
+		<br />
+		@Html.ValidationMessageFor(Model => Model.Description, "", attributesErrorText)
+	</div>
+	<input class="btn btn-primary" type="submit" value="Save" />
+}

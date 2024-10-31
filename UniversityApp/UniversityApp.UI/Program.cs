@@ -11,6 +11,7 @@ if(connectLine == null)
     throw new ArgumentNullException("Connection string not found");
 }
 
+builder.Services.AddLogging();
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
     options.UseLazyLoadingProxies();
