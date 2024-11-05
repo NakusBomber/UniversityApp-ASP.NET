@@ -11,6 +11,7 @@ public class Group : Entity
 
 	[Required]
 	[StringLength(50)]
+	[RegularExpression(@"^\S(.*\S)?$", ErrorMessage = "Name should not start or end with a space.")]
 	public string Name { get; set; }
 
 	[ForeignKey(nameof(CourseId))]
@@ -42,5 +43,10 @@ public class Group : Entity
 	public override int GetHashCode()
 	{
 		return (Id, Name, CourseId).GetHashCode();
+	}
+
+	public bool CanDelete()
+	{
+		return !Students.Any();
 	}
 }

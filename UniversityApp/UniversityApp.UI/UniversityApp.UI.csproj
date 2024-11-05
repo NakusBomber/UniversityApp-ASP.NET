@@ -28,7 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Group\Create.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Shared\_Required.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Group\Create.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@ using UniversityApp.UI.Models;
 
 namespace UniversityApp.UI.Controllers;
 
+[Route("groups")]
 public class GroupController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -15,7 +16,6 @@ public class GroupController : Controller
         _unitOfWork = unitOfWork;
     }
 
-    [Route("/groups")]
     public async Task<IActionResult> AllGroups(Guid? courseId)
     {
 		Expression<Func<Group, bool>>? expression =
@@ -27,7 +27,7 @@ public class GroupController : Controller
 		return View(vm);
 	}
 
-    [Route("/groups/{id:guid}")]
+    [Route("{id:guid}")]
     public async Task<IActionResult> Group(Guid id)
     {
 		try
@@ -43,5 +43,33 @@ public class GroupController : Controller
 		{
             return StatusCode(StatusCodes.Status500InternalServerError);
 		}
+    }
+
+    [Route("create")]
+    [HttpGet]
+    public async Task<IActionResult> Create()
+    {
+        var courses = await _unitOfWork.CourseRepository.GetAsync();
+        var vm = new CreateEditGroupViewModel(courses);
+        return View(vm);
+    }
+
+    [Route("create")]
+    [HttpPost]
+    public async Task<IActionResult> Create(Group group)
+    {
+        try
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(group);
+            }
+            await _unitOfWork.GroupRepository.CreateAsync(group);
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return RedirectToAction("AllGroups");
     }
 }

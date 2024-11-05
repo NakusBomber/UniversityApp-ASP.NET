@@ -23,6 +23,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews(opt =>
 {
 	opt.ModelBinderProviders.Insert(0, new CourseModelBinderProvider());
+	opt.ModelBinderProviders.Insert(1, new GroupModelBinderProvider());
 });
 
 var app = builder.Build();

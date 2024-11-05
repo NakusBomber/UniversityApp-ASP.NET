@@ -1,5 +1,5 @@
 ﻿@using UniversityApp.Core.Entities
-@model IEnumerable<CourseViewModel>
+@model IEnumerable<Course>
 @{
 	ViewData["Title"] = "Courses";
 }
@@ -17,11 +17,10 @@
 	{
 		<h2>Courses:</h2>
 		<ul class="list-group">
-			@foreach (var vm in Model)
+			@foreach (var item in Model)
 			{
-				var item = vm.Course;
 				var classesDelete = "btn btn-outline-danger";
-				if(!vm.IsCanDelete)
+				if (!item.CanDelete())
 				{
 					classesDelete += " disabled";
 				}

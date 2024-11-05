@@ -19,8 +19,7 @@ public class CourseController : Controller
 	public async Task<IActionResult> AllCourses()
 	{
 		var courses = await _unitOfWork.CourseRepository.GetAsync();
-		var courseVms = courses.Select(c => new CourseViewModel(c, c.CanDelete()));
-		return View(courseVms);
+		return View(courses);
 	}
 
 	[Route("{id:guid}")]
