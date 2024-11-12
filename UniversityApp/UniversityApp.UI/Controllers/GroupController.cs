@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using UniversityApp.Core.Entities;
 using UniversityApp.Core.Interfaces;
+using UniversityApp.Core.Interfaces.Services;
 using UniversityApp.UI.Models;
 
 namespace UniversityApp.UI.Controllers;
@@ -9,11 +10,13 @@ namespace UniversityApp.UI.Controllers;
 [Route("groups")]
 public class GroupController : Controller
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGroupService _groupService;
+    private readonly ICourseService _courseService;
 
-    public GroupController(IUnitOfWork unitOfWork)
+    public GroupController(IGroupService groupService, ICourseService courseService)
     {
-        _unitOfWork = unitOfWork;
+        _groupService = groupService;
+        _courseService = courseService;
     }
 
     public async Task<IActionResult> AllGroups(Guid? courseId)
@@ -22,7 +25,7 @@ public class GroupController : Controller
 				courseId == null ? null
 								 : g => g.CourseId == courseId;
 
-		var groups = await _unitOfWork.GroupRepository.GetAsync(expression);
+		var groups = await _groupService.GetAsync(expression);
         var vm = new GroupsViewModel(groups, courseId);
 		return View(vm);
 	}
@@ -32,7 +35,7 @@ public class GroupController : Controller
     {
 		try
 		{
-            var group = await _unitOfWork.GroupRepository.GetByIdAsync(id);
+            var group = await _groupService.GetByIdAsync(id);
             return View(group);
 		}
         catch (InvalidOperationException)
@@ -49,7 +52,7 @@ public class GroupController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        var courses = await _unitOfWork.CourseRepository.GetAsync();
+        var courses = await _courseService.GetAsync();
         var vm = new CreateEditGroupViewModel(courses);
         return View(vm);
     }
@@ -64,7 +67,7 @@ public class GroupController : Controller
             {
                 return View(group);
             }
-            await _unitOfWork.GroupRepository.CreateAsync(group);
+            await _groupService.CreateAsync(group);
         }
         catch (Exception)
         {

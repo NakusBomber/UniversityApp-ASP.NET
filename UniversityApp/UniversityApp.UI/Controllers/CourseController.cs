@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using UniversityApp.Core.Entities;
 using UniversityApp.Core.Interfaces;
+using UniversityApp.Core.Interfaces.Services;
 using UniversityApp.UI.Models;
 
 namespace UniversityApp.UI.Controllers;
@@ -9,16 +10,16 @@ namespace UniversityApp.UI.Controllers;
 [Route("courses")]
 public class CourseController : Controller
 {
-	private readonly IUnitOfWork _unitOfWork;
+	private readonly ICourseService _courseService;
 
-	public CourseController(IUnitOfWork unitOfWork)
+	public CourseController(ICourseService courseService)
 	{
-		_unitOfWork = unitOfWork;
+		_courseService = courseService;
 	}
 
 	public async Task<IActionResult> AllCourses()
 	{
-		var courses = await _unitOfWork.CourseRepository.GetAsync();
+		var courses = await _courseService.GetAsync();
 		return View(courses);
 	}
 
@@ -27,7 +28,7 @@ public class CourseController : Controller
 	{
 		try
 		{
-			var course = await _unitOfWork.CourseRepository.GetByIdAsync(id);
+			var course = await _courseService.GetByIdAsync(id);
 			return View(course);
 		}
 		catch (InvalidOperationException)
@@ -55,7 +56,7 @@ public class CourseController : Controller
 			{
 				return View(course);
 			}
-			await _unitOfWork.CourseRepository.CreateAsync(course);
+			await _courseService.CreateAsync(course);
 		}
 		catch (Exception)
 		{
@@ -70,7 +71,7 @@ public class CourseController : Controller
 	{
 		try
 		{
-			var course = await _unitOfWork.CourseRepository.GetByIdAsync(id);
+			var course = await _courseService.GetByIdAsync(id);
 
 			return View(course);
 		}
@@ -94,7 +95,7 @@ public class CourseController : Controller
 			{
 				return View(course);
 			}
-			await _unitOfWork.CourseRepository.UpdateAsync(course);
+			await _courseService.UpdateAsync(course);
 
 			return RedirectToAction("AllCourses");
 		}
@@ -110,12 +111,12 @@ public class CourseController : Controller
 	{
 		try
 		{
-			var course = await _unitOfWork.CourseRepository.GetByIdAsync(id);
+			var course = await _courseService.GetByIdAsync(id);
 			if(!course.CanDelete())
 			{
 				throw new InvalidOperationException("Cannot delete this course");
 			}
-			await _unitOfWork.CourseRepository.DeleteAsync(course);
+			await _courseService.DeleteAsync(course);
 		}
 		catch (Exception)
 		{

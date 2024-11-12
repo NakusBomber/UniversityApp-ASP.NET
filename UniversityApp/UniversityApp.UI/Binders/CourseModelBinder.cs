@@ -11,7 +11,7 @@ public class CourseModelBinder : IModelBinder
 		var nameValues = bindingContext.ValueProvider.GetValue("Name");
 		var descriptionValues = bindingContext.ValueProvider.GetValue("Description");
 
-		if(nameValues == ValueProviderResult.None)
+		if(nameValues == ValueProviderResult.None || string.IsNullOrEmpty(nameValues.FirstValue))
 		{
 			throw new ArgumentException("Name required");
 		}

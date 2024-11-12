@@ -2,17 +2,18 @@
 using System.Linq.Expressions;
 using UniversityApp.Core.Entities;
 using UniversityApp.Core.Interfaces;
+using UniversityApp.Core.Interfaces.Services;
 using UniversityApp.UI.Models;
 
 namespace UniversityApp.UI.Controllers;
 
 public class StudentController : Controller
 {
-	private readonly IUnitOfWork _unitOfWork;
+	private readonly IStudentService _studentService;
 
-	public StudentController(IUnitOfWork unitOfWork)
+	public StudentController(IStudentService studentService)
 	{
-		_unitOfWork = unitOfWork;
+		_studentService = studentService;
 	}
 
 	[Route("/students")]
@@ -20,7 +21,7 @@ public class StudentController : Controller
 	{
 		Expression<Func<Student, bool>>? expression = 
 			groupId == null ? null : s => s.GroupId == groupId;
-		var students = await _unitOfWork.StudentRepository.GetAsync(expression);
+		var students = await _studentService.GetAsync(expression);
 		var vm = new StudentsViewModel(students, groupId);
 		return View(vm);
 	}
@@ -30,7 +31,7 @@ public class StudentController : Controller
 	{
 		try
 		{
-			var student = await _unitOfWork.StudentRepository.GetByIdAsync(id);
+			var student = await _studentService.GetByIdAsync(id);
 			return View(student);
 		}
 		catch (InvalidOperationException)

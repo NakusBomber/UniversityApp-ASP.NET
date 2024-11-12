@@ -2,15 +2,17 @@
 using Microsoft.Extensions.DependencyInjection;
 using UniversityApp.Core.Entities;
 using UniversityApp.Core.Interfaces;
+using UniversityApp.Core.Interfaces.Services;
 
 namespace UniversityApp.Infrastructure.Binders;
 
 public class GroupModelBinder : IModelBinder
 {
-	private readonly IUnitOfWork _unitOfWork;
-	public GroupModelBinder(IUnitOfWork unitOfWork)
+	private readonly ICourseService _courseService;
+
+	public GroupModelBinder(ICourseService courseService)
 	{
-		_unitOfWork = unitOfWork;
+		_courseService = courseService;
 	}
 
 	public async Task BindModelAsync(ModelBindingContext bindingContext)
@@ -19,7 +21,9 @@ public class GroupModelBinder : IModelBinder
 		var nameValues = bindingContext.ValueProvider.GetValue("Group.Name");
 		var courseIdValues = bindingContext.ValueProvider.GetValue("Group.CourseId");
 
-		if(nameValues == ValueProviderResult.None || courseIdValues == ValueProviderResult.None)
+		if(nameValues == ValueProviderResult.None || 
+			string.IsNullOrEmpty(nameValues.FirstValue) ||
+			courseIdValues == ValueProviderResult.None)
 		{
 			throw new ArgumentException("Name and courseId are required");
 		}
@@ -33,7 +37,7 @@ public class GroupModelBinder : IModelBinder
 			throw new ArgumentException("CourseId not valid");
 		}
 
-		var course = await _unitOfWork.CourseRepository.GetByIdAsync(courseId);
+		var course = await _courseService.GetByIdAsync(courseId);
 		
 		Group result;
 		if(id == null || !Guid.TryParse(id, out var guid))
