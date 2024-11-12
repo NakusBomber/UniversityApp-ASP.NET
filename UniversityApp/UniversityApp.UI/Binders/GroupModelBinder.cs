@@ -8,14 +8,7 @@ namespace UniversityApp.Infrastructure.Binders;
 
 public class GroupModelBinder : IModelBinder
 {
-	private readonly ICourseService _courseService;
-
-	public GroupModelBinder(ICourseService courseService)
-	{
-		_courseService = courseService;
-	}
-
-	public async Task BindModelAsync(ModelBindingContext bindingContext)
+	public Task BindModelAsync(ModelBindingContext bindingContext)
 	{
 		var idValues = bindingContext.ValueProvider.GetValue("Group.Id");
 		var nameValues = bindingContext.ValueProvider.GetValue("Group.Name");
@@ -37,18 +30,17 @@ public class GroupModelBinder : IModelBinder
 			throw new ArgumentException("CourseId not valid");
 		}
 
-		var course = await _courseService.GetByIdAsync(courseId);
-		
 		Group result;
 		if(id == null || !Guid.TryParse(id, out var guid))
 		{
-			result = new Group(name, course);
+			result = new Group(name, courseId);
 		}
 		else
 		{
-			result = new Group(guid, name, course);
+			result = new Group(guid, name, courseId);
 		}
 
 		bindingContext.Result = ModelBindingResult.Success(result);
+		return Task.CompletedTask;
 	}
 }

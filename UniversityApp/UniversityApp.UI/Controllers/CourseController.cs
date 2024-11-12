@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 using UniversityApp.Core.Entities;
 using UniversityApp.Core.Interfaces;
 using UniversityApp.Core.Interfaces.Services;
@@ -52,6 +54,7 @@ public class CourseController : Controller
 	{
 		try
 		{
+			await VerifyUniqueNameAndAddError(course);
 			if (!ModelState.IsValid)
 			{
 				return View(course);
@@ -91,12 +94,19 @@ public class CourseController : Controller
 	{
 		try
 		{
-			if(!ModelState.IsValid)
+			var oldCourse = await _courseService.GetByIdAsync(course.Id);
+			if(!Entity.AreEntitiesEqual(oldCourse, course))
 			{
-				return View(course);
+				if (oldCourse.Name != course.Name)
+				{
+					await VerifyUniqueNameAndAddError(course);
+				}
+				if (!ModelState.IsValid)
+				{
+					return View(course);
+				}
+				await _courseService.UpdateAsync(course);
 			}
-			await _courseService.UpdateAsync(course);
-
 			return RedirectToAction("AllCourses");
 		}
 		catch (Exception)
@@ -125,4 +135,13 @@ public class CourseController : Controller
 		return RedirectToAction("AllCourses");
 	}
 
+	private async Task VerifyUniqueNameAndAddError(Course course)
+	{
+		var isUniqueName = await _courseService.FindAsync(c => c.Name == course.Name);
+		if(isUniqueName != null)
+		{
+			var message = course.UniqueNameErrorMessage;
+			ModelState.AddModelError<Course>(c => c.Name, message);
+		}
+	}
 }

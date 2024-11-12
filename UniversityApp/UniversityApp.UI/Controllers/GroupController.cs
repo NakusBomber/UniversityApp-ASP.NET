@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Linq.Expressions;
 using UniversityApp.Core.Entities;
 using UniversityApp.Core.Interfaces;
 using UniversityApp.Core.Interfaces.Services;
+using UniversityApp.Core.Services;
 using UniversityApp.UI.Models;
 
 namespace UniversityApp.UI.Controllers;
@@ -11,12 +13,10 @@ namespace UniversityApp.UI.Controllers;
 public class GroupController : Controller
 {
     private readonly IGroupService _groupService;
-    private readonly ICourseService _courseService;
 
-    public GroupController(IGroupService groupService, ICourseService courseService)
+    public GroupController(IGroupService groupService)
     {
         _groupService = groupService;
-        _courseService = courseService;
     }
 
     public async Task<IActionResult> AllGroups(Guid? courseId)
@@ -50,29 +50,114 @@ public class GroupController : Controller
 
     [Route("create")]
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public async Task<IActionResult> Create([FromServices] ICourseService courseService)
     {
-        var courses = await _courseService.GetAsync();
+        var courses = await courseService.GetAsync();
         var vm = new CreateEditGroupViewModel(courses);
         return View(vm);
     }
 
     [Route("create")]
     [HttpPost]
-    public async Task<IActionResult> Create(Group group)
+    public async Task<IActionResult> Create(Group group, [FromServices] ICourseService courseService)
     {
         try
         {
-            if(!ModelState.IsValid)
-            {
-                return View(group);
-            }
-            await _groupService.CreateAsync(group);
-        }
+			await VerifyUniqueNameAndAddError(group);
+			if (!ModelState.IsValid)
+			{
+				var courses = await courseService.GetAsync();
+				var vm = new CreateEditGroupViewModel(courses, group);
+				return View(vm);
+			}
+			await _groupService.CreateAsync(group);
+		}
         catch (Exception)
         {
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
         return RedirectToAction("AllGroups");
     }
+
+	[Route("delete")]
+	[HttpPost]
+	public async Task<IActionResult> Delete(Guid id)
+	{
+		try
+		{
+			var group = await _groupService.GetByIdAsync(id);
+			if (!group.CanDelete())
+			{
+				throw new InvalidOperationException("Cannot delete this group");
+			}
+			await _groupService.DeleteAsync(group);
+		}
+		catch (Exception)
+		{
+			return BadRequest();
+		}
+		return RedirectToAction("AllGroups");
+	}
+
+	[Route("edit")]
+	[HttpGet]
+	public async Task<IActionResult> Edit(Guid id, [FromServices] ICourseService courseService)
+	{
+		try
+		{
+			var courses = await courseService.GetAsync();
+			var group = await _groupService.GetByIdAsync(id);
+			var vm = new CreateEditGroupViewModel(courses, group);
+			return View(vm);
+		}
+		catch (InvalidOperationException)
+		{
+			return BadRequest();
+		}
+		catch (Exception)
+		{
+			return StatusCode(StatusCodes.Status500InternalServerError);
+		}
+	}
+
+	[Route("edit")]
+	[HttpPost]
+	public async Task<IActionResult> Edit(Group group, [FromServices] ICourseService courseService)
+	{
+		try
+		{
+			var oldGroup = await _groupService.GetByIdAsync(group.Id);
+			if (!Entity.AreEntitiesEqual(oldGroup, group))
+			{
+				if(oldGroup.Name != group.Name)
+				{
+					await VerifyUniqueNameAndAddError(group);
+				}
+				if (!ModelState.IsValid)
+				{
+					var courses = await courseService.GetAsync();
+					var vm = new CreateEditGroupViewModel(courses, group);
+					return View(vm);
+				}
+				oldGroup.CourseId = group.CourseId;
+				oldGroup.Name = group.Name;
+				await _groupService.UpdateAsync(oldGroup);
+			}
+			return RedirectToAction("AllGroups");
+		}
+		catch (Exception)
+		{
+			return StatusCode(StatusCodes.Status500InternalServerError);
+		}
+	}
+
+	private async Task VerifyUniqueNameAndAddError(Group group)
+	{
+		var isUniqueName = await _groupService.FindAsync(g => g.Name == group.Name);
+		if(isUniqueName != null)
+		{
+			var message = group.UniqueNameErrorMessage;
+			ModelState.AddModelError<CreateEditGroupViewModel>(vm => vm.Group!.Name, message);
+		}
+	}
 }

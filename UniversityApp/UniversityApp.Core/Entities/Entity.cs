@@ -1,7 +1,12 @@
-﻿namespace UniversityApp.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace UniversityApp.Core.Entities;
 
 public abstract class Entity
 {
+	[NotMapped]
+	public string UniqueNameErrorMessage => $"{GetType().Name} with same name already exists";
+
 	abstract public Guid Id { get; set; }
 
 	public override bool Equals(object? obj)
@@ -50,6 +55,11 @@ public abstract class Entity
 		{
 			var value1 = property.GetValue(entity1);
 			var value2 = property.GetValue(entity2);
+
+			if(typeof(Entity).IsAssignableFrom(property.PropertyType))
+			{
+				continue;
+			}
 
 			if (value1 == null && value2 != null || value1 != null && value2 == null)
 			{

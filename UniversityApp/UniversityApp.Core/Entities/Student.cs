@@ -31,17 +31,16 @@ public class Student : Entity
 		LastName = string.Empty;
 	}
 
-	public Student(Guid id, string firstName, string lastName, Group? group = null)
+	public Student(Guid id, string firstName, string lastName, Guid? groupId = null)
 	{
 		Id = id;
 		FirstName = firstName;
 		LastName = lastName;
-		Group = group;
-		GroupId = group?.Id;
+		GroupId = groupId;
 	}
 
-	public Student(string firstName, string lastName, Group? group = null)
-		: this(Guid.NewGuid(), firstName, lastName, group)
+	public Student(string firstName, string lastName, Guid? groupId = null)
+		: this(Guid.NewGuid(), firstName, lastName, groupId)
 	{
 	}
 

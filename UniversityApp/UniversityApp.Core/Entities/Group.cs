@@ -15,7 +15,7 @@ public class Group : Entity
 	public string Name { get; set; }
 
 	[ForeignKey(nameof(CourseId))]
-	public virtual Course Course { get; set; }
+	public virtual Course? Course { get; set; }
 
 	public Guid CourseId { get; set; }
 
@@ -27,17 +27,16 @@ public class Group : Entity
 		Course = new Course(Guid.NewGuid(), string.Empty);
 	}
 
-	public Group(string name, Course course)
-		: this(Guid.NewGuid(), name, course)
+	public Group(string name, Guid courseId)
+		: this(Guid.NewGuid(), name, courseId)
 	{
 	}
 
-	public Group(Guid id, string name, Course course)
+	public Group(Guid id, string name, Guid courseId)
 	{
 		Id = id;
 		Name = name;
-		Course = course;
-		CourseId = course.Id;
+		CourseId = courseId;
 	}
 
 	public override int GetHashCode()

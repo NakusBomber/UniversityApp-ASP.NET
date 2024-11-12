@@ -12,20 +12,20 @@
 @using (Html.BeginForm("Create", "Group", FormMethod.Post))
 {
 	<div>
-		@Html.DisplayNameFor(vm => vm.Group.Name)
+		@Html.DisplayNameFor(vm => vm.Group!.Name)
 		@await Html.PartialAsync("_Required")
 		<br />
-		@Html.EditorFor(vm => vm.Group.Name)
+		@Html.EditorFor(vm => vm.Group!.Name)
 		<br />
-		@Html.ValidationMessageFor(vm => vm.Group.Name, "", attributesErrorText)
+		@Html.ValidationMessageFor(vm => vm.Group!.Name, "", attributesErrorText)
 	</div>
 	<div>
-		@Html.DisplayNameFor(vm => vm.Group.Course)
+		@Html.DisplayNameFor(vm => vm.Group!.Course)
 		@await Html.PartialAsync("_Required")
 		<br />
-		@Html.DropDownListFor(vm => vm.Group.CourseId, new SelectList(Model.Courses, "Id", "Name"), "Select")
+		@Html.DropDownListFor(vm => vm.Group!.CourseId, new SelectList(Model.Courses, "Id", "Name"), "Select")
 		<br />
-		@Html.ValidationMessageFor(vm => vm.Group.CourseId, "", attributesErrorText)
+		@Html.ValidationMessageFor(vm => vm.Group!.CourseId, "", attributesErrorText)
 	</div>
 	<br />
 	<input class="btn btn-primary" type="submit" value="Create" />

@@ -9,16 +9,9 @@ namespace UniversityApp.Infrastructure.Providers;
 
 public class GroupModelBinderProvider : IModelBinderProvider
 {
-	private readonly ICourseService _courseService;
-
-	public GroupModelBinderProvider(ICourseService courseService)
-	{
-		_courseService = courseService;
-	}
-
 	public IModelBinder GetBinder(ModelBinderProviderContext context)
 	{
-		var binder = new GroupModelBinder(_courseService);
+		var binder = new GroupModelBinder();
 		Type type = context.Metadata.ModelType;
 		var result = type == typeof(Group) ? binder : null;
 		return result!;

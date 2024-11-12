@@ -27,7 +27,7 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddControllersWithViews(opt =>
 {
 	opt.ModelBinderProviders.Insert(0, new CourseModelBinderProvider());
-	opt.ModelBinderProviders.Insert(0, new GroupModelBinderProvider(builder.Services.BuildServiceProvider().GetRequiredService<ICourseService>()));
+	opt.ModelBinderProviders.Insert(0, new GroupModelBinderProvider());
 });
 
 var app = builder.Build();
