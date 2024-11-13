@@ -26,7 +26,8 @@ public class GroupController : Controller
 								 : g => g.CourseId == courseId;
 
 		var groups = await _groupService.GetAsync(expression);
-        var vm = new GroupsViewModel(groups, courseId);
+		var course = courseId == null ? null : groups.FirstOrDefault()?.Course;
+		var vm = new GroupsViewModel(groups, course);
 		return View(vm);
 	}
 
