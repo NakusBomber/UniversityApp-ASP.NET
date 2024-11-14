@@ -105,7 +105,9 @@ public class CourseController : Controller
 				{
 					return View(course);
 				}
-				await _courseService.UpdateAsync(course);
+				oldCourse.Name = course.Name;
+				oldCourse.Description = course.Description;
+				await _courseService.UpdateAsync(oldCourse);
 			}
 			return RedirectToAction("AllCourses");
 		}

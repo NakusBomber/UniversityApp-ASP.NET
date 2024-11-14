@@ -5,6 +5,7 @@ using UniversityApp.Core.Interfaces.Services;
 using UniversityApp.Core.Services;
 using UniversityApp.Infrastructure;
 using UniversityApp.Infrastructure.Providers;
+using UniversityApp.UI.Providers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddControllersWithViews(opt =>
 {
 	opt.ModelBinderProviders.Insert(0, new CourseModelBinderProvider());
 	opt.ModelBinderProviders.Insert(0, new GroupModelBinderProvider());
+	opt.ModelBinderProviders.Insert(0, new StudentModelBinderProvider());
 });
 
 var app = builder.Build();

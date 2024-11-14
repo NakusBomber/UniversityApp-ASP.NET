@@ -2,8 +2,18 @@
 @model Student
 @{
 	ViewData["Title"] = Model.FullName;
+
+	var classAttributes = "btn btn-primary";
 }
 
 <p>@Model.FullName</p>
 <p>@Model.Id</p>
-<p class="text-secondary">@Model.GroupId</p>
+
+
+@if (Model.Group == null)
+{
+	classAttributes += " disabled";
+}
+
+<a class="@classAttributes" asp-controller="Group" asp-action="Group" asp-route-id="@Model.GroupId">Group</a>
+

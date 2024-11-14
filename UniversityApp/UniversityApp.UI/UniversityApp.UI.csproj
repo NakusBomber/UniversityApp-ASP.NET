@@ -30,10 +30,15 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Group\Create.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Shared\_Required.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Student\Create.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Group\Create.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Student\Create.cshtml" />
   </ItemGroup>
 
 </Project>

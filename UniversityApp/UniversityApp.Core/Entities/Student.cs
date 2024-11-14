@@ -11,10 +11,12 @@ public class Student : Entity
 
 	[Required]
 	[StringLength(50)]
+	[RegularExpression(@"^\S(.*\S)?$", ErrorMessage = "Name should not start or end with a space.")]
 	public string FirstName { get; set; }
 
 	[Required]
 	[StringLength(50)]
+	[RegularExpression(@"^\S(.*\S)?$", ErrorMessage = "Name should not start or end with a space.")]
 	public string LastName { get; set; }
 
 	[ForeignKey(nameof(GroupId))]
