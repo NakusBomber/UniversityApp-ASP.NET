@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using UniversityApp.Core.Entities;
 
-namespace UniversityApp.Infrastructure.Binders;
+namespace UniversityApp.UI.Binders;
 
 public class CourseModelBinder : IModelBinder
 {

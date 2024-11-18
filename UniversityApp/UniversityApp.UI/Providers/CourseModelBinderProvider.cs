@@ -2,9 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using UniversityApp.Core.Entities;
-using UniversityApp.Infrastructure.Binders;
+using UniversityApp.UI.Binders;
 
-namespace UniversityApp.Infrastructure.Providers;
+namespace UniversityApp.UI.Providers;
 
 public class CourseModelBinderProvider : IModelBinderProvider
 {

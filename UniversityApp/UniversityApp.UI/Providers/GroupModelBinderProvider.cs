@@ -3,9 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using UniversityApp.Core.Entities;
 using UniversityApp.Core.Interfaces;
 using UniversityApp.Core.Interfaces.Services;
-using UniversityApp.Infrastructure.Binders;
+using UniversityApp.UI.Binders;
 
-namespace UniversityApp.Infrastructure.Providers;
+namespace UniversityApp.UI.Providers;
 
 public class GroupModelBinderProvider : IModelBinderProvider
 {

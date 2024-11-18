@@ -4,7 +4,6 @@ using UniversityApp.Core.Interfaces;
 using UniversityApp.Core.Interfaces.Services;
 using UniversityApp.Core.Services;
 using UniversityApp.Infrastructure;
-using UniversityApp.Infrastructure.Providers;
 using UniversityApp.UI.Providers;
 
 var builder = WebApplication.CreateBuilder(args);

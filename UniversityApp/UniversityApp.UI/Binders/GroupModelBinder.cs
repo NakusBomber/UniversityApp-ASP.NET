@@ -1,10 +1,10 @@
-﻿	using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using UniversityApp.Core.Entities;
 using UniversityApp.Core.Interfaces;
 using UniversityApp.Core.Interfaces.Services;
 
-namespace UniversityApp.Infrastructure.Binders;
+namespace UniversityApp.UI.Binders;
 
 public class GroupModelBinder : IModelBinder
 {
