@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 using UniversityApp.Core.Entities;
-using UniversityApp.Core.Interfaces;
 using UniversityApp.Core.Interfaces.Services;
-using UniversityApp.UI.Models;
 
 namespace UniversityApp.UI.Controllers;
 
