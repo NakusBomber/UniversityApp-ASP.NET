@@ -1,0 +1,31 @@
+﻿@model CreateEditGroupViewModel
+@{
+	ViewData["Title"] = "Create group";
+	var attributesErrorText = new Dictionary<string, object>()
+	{
+		{ "class", "text-danger" }
+	};
+}
+
+<h3>Create group</h3>
+@using (Html.BeginForm("Create", "Group", FormMethod.Post))
+{
+	<div>
+		@Html.DisplayNameFor(vm => vm.Group!.Name)
+		@await Html.PartialAsync("_Required")
+		<br />
+		@Html.EditorFor(vm => vm.Group!.Name)
+		<br />
+		@Html.ValidationMessageFor(vm => vm.Group!.Name, "", attributesErrorText)
+	</div>
+	<div>
+		@Html.DisplayNameFor(vm => vm.Group!.Course)
+		@await Html.PartialAsync("_Required")
+		<br />
+		@Html.DropDownListFor(vm => vm.Group!.CourseId, new SelectList(Model.Courses, "Id", "Name"), "Select")
+		<br />
+		@Html.ValidationMessageFor(vm => vm.Group!.CourseId, "", attributesErrorText)
+	</div>
+	<br />
+	<input class="btn btn-primary" type="submit" value="Create" />
+}

@@ -1,0 +1,36 @@
+﻿@using UniversityApp.Core.Entities
+@model CreateEditGroupViewModel
+@{
+	ViewData["Title"] = $"Edit {Model.Group?.Name ?? string.Empty}";
+	var attributesErrorText = new Dictionary<string, object>()
+	{
+		{ "class", "text-danger" }
+	};
+}
+
+<h3>Edit group</h3>
+@if(Model.Group != null)
+{
+	@using (Html.BeginForm("Edit", "Group", FormMethod.Post))
+	{
+		@Html.HiddenFor(vm => vm.Group!.Id)
+		<div>
+			@Html.DisplayNameFor(vm => vm.Group!.Name)
+			@await Html.PartialAsync("_Required")
+			<br />
+			@Html.EditorFor(vm => vm.Group!.Name)
+			<br />
+			@Html.ValidationMessageFor(vm => vm.Group!.Name, "", attributesErrorText)
+		</div>
+		<div>
+			@Html.DisplayNameFor(vm => vm.Group!.Course)
+			@await Html.PartialAsync("_Required")
+			<br />
+			@Html.DropDownListFor(vm => vm.Group!.CourseId, new SelectList(Model.Courses, "Id", "Name"))
+			<br />
+			@Html.ValidationMessageFor(vm => vm.Group!.CourseId, "", attributesErrorText)
+		</div>
+		<br />
+		<input class="btn btn-primary" type="submit" value="Save" />
+	}
+}
