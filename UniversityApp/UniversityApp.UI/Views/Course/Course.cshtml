@@ -1,0 +1,16 @@
+﻿@using UniversityApp.Core.Entities
+@model Course
+@{
+	ViewData["Title"] = Model.Name;
+
+	var classAttributes = "btn btn-primary";
+}
+
+<p>@Model.Name</p>
+<p>@Model.Id</p>
+
+@if(Model.Groups.Count == 0)
+{
+	classAttributes += " disabled";
+}
+<a class="@classAttributes" asp-controller="Group" asp-action="AllGroups" asp-route-courseId="@Model.Id">Groups</a>

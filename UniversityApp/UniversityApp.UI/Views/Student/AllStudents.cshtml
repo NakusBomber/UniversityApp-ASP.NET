@@ -1,0 +1,45 @@
+﻿@using UniversityApp.Core.Entities
+@model StudentsViewModel
+@{
+	ViewData["Title"] = "Students";
+}
+
+<div class="container d-flex flex-row justify-content-center">
+	<a class="btn btn-primary" asp-action="Create">New student</a>
+</div>
+
+@{
+	if (Model == null || !Model.Students.Any())
+	{
+		<h4>No students found</h4>
+	}
+	else
+	{
+		<h2>Students:</h2>
+		if (Model.Group != null)
+		{
+			<span>
+				With group
+				<span class="fw-bold">@Model.Group.Name</span>
+				<span class="text-secondary">@Model.Group.Id</span>
+			</span>
+		}
+		<ul class="list-group">
+			@foreach (var item in Model.Students)
+			{
+				var classesDelete = "btn btn-outline-danger";
+
+				<li class="list-group-item d-flex flex-row justify-content-between">
+					<a class="text-dark text-decoration-none d-flex flex-column justify-content-center" asp-action="Student" asp-route-id="@item.Id">@item.FullName</a>
+					<div class="d-flex gap-2 flex-row justify-content-between">
+						<a class="btn btn-outline-primary" asp-action="Student" asp-route-id="@item.Id">Info</a>
+						<a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+						<form method="post" asp-action="Delete" asp-route-id="@item.Id">
+							<input class="@classesDelete" type="submit" value="Delete" />
+						</form>
+					</div>
+				</li>
+			}
+		</ul>
+	}
+}

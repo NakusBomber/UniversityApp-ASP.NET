@@ -1,0 +1,38 @@
+﻿@model CreateEditStudentViewModel
+@{
+	ViewData["Title"] = "Create student";
+	var attributesErrorText = new Dictionary<string, object>()
+	{
+		{ "class", "text-danger" }
+	};
+}
+
+<h3>Create student</h3>
+@using (Html.BeginForm("Create", "Student", FormMethod.Post))
+{
+	<div>
+		@Html.DisplayNameFor(vm => vm.Student!.FirstName)
+		@await Html.PartialAsync("_Required")
+		<br/>
+		@Html.EditorFor(vm => vm.Student!.FirstName)
+		<br/>
+		@Html.ValidationMessageFor(vm => vm.Student!.FirstName, "", attributesErrorText)
+	</div>
+	<div>
+		@Html.DisplayNameFor(vm => vm.Student!.LastName)
+		@await Html.PartialAsync("_Required")
+		<br />
+		@Html.EditorFor(vm => vm.Student!.LastName)
+		<br />
+		@Html.ValidationMessageFor(vm => vm.Student!.LastName, "", attributesErrorText)
+	</div>
+	<div>
+		@Html.DisplayNameFor(vm => vm.Student!.Group)
+		<br/>
+		@Html.DropDownListFor(vm => vm.Student!.GroupId, new SelectList(Model.Groups, "Id", "Name"), "No group")
+		<br/>
+		@Html.ValidationMessageFor(vm => vm.Student!.GroupId, "", attributesErrorText)
+	</div>
+	<br/>
+	<input class="btn btn-primary" type="submit" value="Create"/>
+}
